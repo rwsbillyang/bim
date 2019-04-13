@@ -1,0 +1,138 @@
+<head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=no" />
+    <meta charset="utf-8">
+
+    <!--  
+    <link rel="stylesheet" href="/css/style.min.css" type="text/css">
+	-->
+   <link rel="stylesheet" href="https://developer.api.autodesk.com/modelderivative/v2/viewers/style.min.css" type="text/css">
+   
+    <style>
+        body {
+            margin: 0;
+        }
+        #MyViewerDiv {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            background-color: #F0F8FF;
+        }
+        #MyNextButton {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        z-index: 1;
+        font-size: 40px;
+        cursor: pointer;
+    }
+    </style>
+</head>
+<body>
+
+    <!-- The Viewer will be instantiated here -->
+    <div id="MyViewerDiv"></div>
+	<!--  <button id="MyNextButton" onClick="loadNextModel()">Next!</button> -->
+    
+    <script type='text/javascript' src="https://cdn.bootcss.com/three.js/92/three.min.js"></script>
+    <!-- <script type='text/javascript' src="/js/viewer3D.min.js"></script> -->
+ 	<script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/viewer3D.min.js"></script>
+
+	<script type='text/javascript' src="/js/axios.min.js"></script>
+	<script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.2/weui.min.js"></script>
+
+    <!-- Developer JS -->
+    <script>
+        var viewerApp;
+
+        var viewables;
+        var indexViewable;
+        
+        var options = {
+        	    env: 'AutodeskProduction',
+        	    getAccessToken: myGetAccessToken
+        	}
+        
+        var documentId = 'urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6Y24ubml1a3VkLmRlbW9fYnVja2V0L0RkR21xOTE1MzE0NjQ3NzgwNDIucnZ0';
+        Autodesk.Viewing.Initializer(options, function onInitialized(){
+            viewerApp = new Autodesk.Viewing.ViewingApplication('MyViewerDiv');
+            viewerApp.registerViewer(viewerApp.k3D, Autodesk.Viewing.Private.GuiViewer3D);
+            viewerApp.loadDocument(documentId, onDocumentLoadSuccess, onDocumentLoadFailure);
+        });
+
+        function onDocumentLoadSuccess(doc) {
+
+            // We could still make use of Document.getSubItemsWithProperties()
+            // However, when using a ViewingApplication, we have access to the **bubble** attribute,
+            // which references the root node of a graph that wraps each object from the Manifest JSON.
+            var viewables = viewerApp.bubble.search({'type':'geometry'});
+            if (viewables.length === 0) {
+                console.error('Document contains no viewables.');
+                return;
+            }
+
+            // Choose any of the avialble viewables
+            viewerApp.selectItem(viewables[0].data, onItemLoadSuccess, onItemLoadFail);
+        }
+
+        function onDocumentLoadFailure(viewerErrorCode) {
+            console.error('onDocumentLoadFailure() - errorCode:' + viewerErrorCode);
+        }
+
+        function onItemLoadSuccess(viewer, item) {
+            console.log('onItemLoadSuccess()!');
+            console.log(viewer);
+            console.log(item);
+
+            // Congratulations! The viewer is now ready to be used.
+            console.log('Viewers are equal: ' + (viewer === viewerApp.getCurrentViewer()));
+        }
+
+        function onItemLoadFail(errorCode) {
+            console.error('onItemLoadFail() - errorCode:' + errorCode);
+        }
+
+        function loadNextModel() {
+            // Next viewable index. Loop back to 0 when overflown.
+            indexViewable = (indexViewable + 1) % viewables.length;
+            viewerApp.selectItem(viewables[indexViewable].data, onItemLoadSuccess, onItemLoadFail);
+        }
+        
+        function myGetAccessToken(onGetAccessToken)
+        {
+	        	//var loading = weui.loading('正在获取...');
+	    		axios({
+	    		  url: '/oauth/getAccessToken',
+	    		  method: 'get',
+	    		  timeout:60000
+	    		  }).then(
+	           		  function (response) {
+	           			//loading.hide();
+	           		
+	           			if(response.data.ret==='ko')
+	           			{
+	           				alert("失败："+ response.data.msg);
+	           			}else
+	           			{
+	           				if(onGetAccessToken)
+	         	        			onGetAccessToken(response.data.accessToken, response.data.expiresIn);
+	           				else
+	           					console.log("no onGetAccessToken to call");
+	           			}
+	           		  }
+	             	  
+	             ).catch(function (error) {
+	            		//loading.hide();
+	           	  	if(error.response){
+	                     console.log(error.response.data);
+	                     console.log(error.response.status);
+	                     console.log(error.response.headers);
+	                 }else{
+	                     console.log('Error',error.message);
+	                 }
+	                 console.log(error.config);
+	             });
+	        	
+	        	return false;
+        }
+    </script>
+</body>

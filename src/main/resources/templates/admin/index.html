@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+		<!-- Bootstrap 3.3.5 -->
+		<link rel="stylesheet" href="/plugins/adminlte/bootstrap/css/bootstrap.min.css">
+		<!-- Font Awesome
+		     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+		      <link rel="stylesheet" href="/plugins/adminlte/css/font-awesome.min.css">
+		     -->
+		<link rel="stylesheet" href="/plugins/adminlte/plugins/fontawesome/css/font-awesome.min.css">
+			
+			
+			
+		<!-- Ionicons 
+		    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+		    -->
+		<link rel="stylesheet" href="/plugins/adminlte/css/ionicons.min.css">
+		   <!-- jvectormap
+		   <link rel="stylesheet" href="/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
+		     -->
+		<link rel="stylesheet" href="/plugins/adminlte/css/AdminLTE.min.css">
+		<link rel="stylesheet" href="/plugins/adminlte/css/skins/_all-skins.min.css">
+		<title>控制台</title>
+	</head>
+
+	<body class="hold-transition skin-blue sidebar-mini">
+		<div class="wrapper">
+
+			<header class="main-header">
+				<!-- Logo -->
+				<a href="#" class="logo">
+					<!-- mini logo for sidebar mini 50x50 pixels -->
+					<span class="logo-mini">ALT</span>
+					<!-- logo for regular state and mobile devices -->
+					<span class="logo-lg">控制台 </span>
+				</a>
+
+				<!-- Header Navbar: style can be found in header.less -->
+				<nav class="navbar navbar-static-top" role="navigation">
+					<!-- Sidebar toggle button-->
+					<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+						<span class="sr-only">Toggle navigation</span>
+					</a>
+				</nav>
+			</header>
+			
+			
+			<!-- Left side column. contains the logo and sidebar -->
+			<aside class="main-sidebar">
+				<!-- sidebar: style can be found in sidebar.less -->
+				<section class="sidebar">
+
+					<!-- sidebar menu: : style can be found in sidebar.less -->
+					<ul class="sidebar-menu">
+						<li class="header">功 能 面 板</li>
+						<li data-url="javascript:;"> <a href="javascript:;"><i class="fa fa-server text-red"></i> <span>上传管理</span></a> </li>
+						
+					</ul>
+				</section>
+				<!-- /.sidebar -->
+			</aside>
+
+			<div class="content-wrapper">
+				<section class="content">
+					<iframe id="main" src="" style="frameborder:0; overflow-x:auto; width:100%; display:block; padding-top:1px; padding-bottom:10px; border: 0;"></iframe>
+				</section>
+			</div>
+			
+
+
+			<footer class="main-footer">
+				<div class="pull-right hidden-xs">
+					<b>Version</b> 2.3.0
+				</div>
+				Copyright @2015 All Rights Reserved.  版权所有. 技术支持：<a href="http://www.web99.cc" target="_blank">九九云站网</a>
+			</footer>
+	</div>
+
+		<script src="/plugins/adminlte/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+		<!-- Bootstrap 3.3.5 -->
+		<script src="/plugins/adminlte/bootstrap/js/bootstrap.min.js"></script>
+		<!-- FastClick -->
+		<script src="/plugins/adminlte/plugins/fastclick/fastclick.min.js"></script>
+		<!-- AdminLTE App -->
+		<script src="/plugins/adminlte/js/app.min.js"></script>
+		<!-- Sparkline -->
+		<script src="/plugins/adminlte/plugins/sparkline/jquery.sparkline.min.js"></script>
+		<!-- jvectormap 
+	    <script src="/plugins/adminlte/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+	    <script src="/plugins/adminlte/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+	    -->
+
+		<!-- SlimScroll 1.3.0 -->
+		<script src="/plugins/adminlte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+   		<script src="/plugins/layer/layer.js"></script>
+   		
+	
+		<script>
+		$(function() {
+			var iframe = $("#main");
+			//$("#leftSide li a").click(function(){
+			$(".dropdown-menu li a,.sidebar-menu li a,.treeview-menu li a").click(function() {
+				var url = $(this).parent().attr("data-url");
+				if (url)
+					iframe.attr("src", url);
+			});
+			/**
+			 * iframe 高度自适应
+			 */
+			$("#main").load(function() {
+				$(this).height(0); //用于每次刷新时控制IFRAME高度初始化 
+				var height = $(this).contents().height() + 10;
+				$(this).height(height < 535 ? 535 : height);
+			});
+
+		});
+		</script>
+	</body>
+
+</html>
