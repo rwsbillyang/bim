@@ -8,7 +8,7 @@ Step1: config Autodesk clientId and clientSecret in the file cn.niukid.bim.Confi
 	public final static String ClientSecret = "your_client_secret";
 ```
 
-after `mvn spring-boot:run`,you can open links as the following in web browser:
+Step2: after `mvn spring-boot:run`,you can open links as the following in web browser:
 ```
  http://localhost:8080/html/index.html
  http://localhost:8080/html/index2.html
